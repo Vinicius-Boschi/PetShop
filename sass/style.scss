@@ -1,89 +1,66 @@
-/// Cores principais do blog
+/// Cores principais do blog.
 $purple: #A050BE;
 $light-gray: #EAEAEB;
 $dark-gray: #464646;
 $yellow: #FABE50;
 $imgwidth: 45%;
 
+///Váriaveis criadas para não ficar repetindo estilizações.
 %no-decoration {text-decoration: none;}
 %u-decoration {text-decoration: underline;}
 
+/// Mixin que reseta essas propriedades para o default.
 @mixin reset-list {
     margin: 0;
     padding: 0;
     list-style: none;
 }
 
-.header {
-    font-family: Arial, Helvetica, sans-serif;
-
-    &__logo {
-        text-align: center;
-    }
-
-    &__img {
-        max-width: 350px;
-    }
-
-    .menu {
-        &__list {
-            display: flex;
-            justify-content: center;
-            border-top: 1px solid $light-gray;
-            border-bottom: 1px solid $light-gray;
-            margin-left: auto;
-            margin-right: auto;
-            width: 80%;
-            padding: 20px 0;
-        }
-
-        &__links {
-            position: relative;
-
-            &:not(:last-child)::after {
-                content: "";
-                position: absolute;
-                top: 0;
-                bottom: 0;
-                right: -3px;
-                margin: auto;
-                height: 15px;
-                width: 1px;
-                background-color: $light-gray;
-            }
-        }
-
-        &__link {
-            padding: 0 25px;
-            color: $dark-gray;
-            text-decoration: none;
-
-            &:hover {
-                color: $purple;
-            }
-        }
-    }
+/* Mixin que deixa as coisas com display flex e justify-content sem ter que ficar repetindo elas. */
+@mixin flx($property, $jty-cnt) {
+    display: flex;
+    #{$property}: $jty-cnt;
 }
 
-.footer {
-    text-align: center;
-    padding: 20px 0;
-    font-family: Arial, Helvetica, sans-serif;
-    position: relative;
-    bottom: 0;
-    left: 50%;
-    transform: translateX(-50%);
-
-    &__logo {
-        max-width: 100px;
-    }
-
-    &__txt {
-        margin: auto;
-        font-size: 14px;
-    }
+/// Mixin que deixa a página responsiva
+@mixin for-phone-only {
+    @media (max-width: 767.98px) { @content; }
 }
 
+@mixin for-tablet-only {
+    @media (min-width: 768px) and (max-width: 1199.98px) { @content; }
+}
+
+@mixin for-desktop-only {
+    @media (min-width: 1200px) { @content; }
+}
+
+/// Função para calcular o font-size de px para rem.
+@function calculateRem($size) {
+    @return $size / 16px * 1rem;
+}
+
+@mixin fontSize($size) {
+    font-size: calculateRem($size);
+}
+
+/// Importa os outros arquivos de estilo do Sass.
+@import 'header', 'footer', 'about', 'article', 'collection', 'contact';
+
+/// Para calcular a margin da página.
+$directions: top, bottom, left, right;
+$layout-margin-size: 10px;
+
+@each $direction in $directions {
+    %no-margin-#{$direction} {margin-#{$direction}: 0;} //Deixa a margin no 0 ou seja sem margin.
+    %default-margin-#{$direction} {margin-#{$direction}: $layout-margin-size;} //Deixa a margin no default, com 10px;
+    %double-margin-#{$direction} {margin-#{$direction}: $layout-margin-size * 2;} // Deixa a margin com o dobro dela, assim ficando 20px.
+    %triple-margin-#{$direction} {margin-#{$direction}: $layout-margin-size * 3;} // Deixa a margin com o triplo dela, assim ficando 30px.
+    %half-margin-#{$direction} {margin-#{$direction}: $layout-margin-size / 2;} // Deixa a margin com a metade dela, assim ficando 5px;
+    
+}
+
+///Estilização da página index.html
 .main {
     display: flex;
     justify-content: center;
@@ -91,6 +68,9 @@ $imgwidth: 45%;
     font-family: Arial, Helvetica, sans-serif;
 
     &__content {
+        @include for-phone-only {
+            width: 100%;
+        }
         width: 70%;
         padding: 40px 8px;
     }
@@ -104,7 +84,7 @@ $imgwidth: 45%;
 
     &__title {
         text-decoration: none;
-        font-size: 22px;
+        @include fontSize(22px);
         color: $dark-gray;
         letter-spacing: 1.5;
 
@@ -117,22 +97,21 @@ $imgwidth: 45%;
         display: flex;
         justify-content: center;
         align-items: center;
-        margin-top: 10px;
-        margin-bottom: 20px;
+        @extend %default-margin-top, %double-margin-bottom;
     }
 
     &__date {
-        margin: 0 10px;
-        font-size: 12px;
+        @extend %no-margin-top, %no-margin-bottom, %default-margin-left, %default-margin-right; // Inclui o each que altera os px do margin.
+        @include fontSize(12px);  // Inclui o mixin fontSize substituindo o fontsize padrão.
         font-style: italic;
     }
 
     &__tag {
-        font-size: 14px;
+        @include fontSize(14px);
         padding: 5px 7px;
         color: $purple;
         border: 1px solid $purple;
-        margin: 0 10px;
+        @extend %no-margin-top, %no-margin-bottom, %default-margin-left, %default-margin-right;
     }
 
     &__details {
@@ -149,12 +128,12 @@ $imgwidth: 45%;
         max-width: 650px;
         margin-left: auto;
         margin-right: auto;
-        font-size: 14px;
+        @include fontSize(14px);
     }
 
     &__btn {
         text-decoration: none;
-        font-size: 16px;
+        @include fontSize(16px);
         letter-spacing: 1.5;
         color: $purple;
         background-color: $yellow;
@@ -173,7 +152,7 @@ $imgwidth: 45%;
         justify-content: space-between;
         align-items: center;
         border-top: 1px solid $light-gray;
-        margin-top: 30px;
+        @extend %triple-margin-top;
         padding-top: 5px;
     }
 
@@ -183,10 +162,9 @@ $imgwidth: 45%;
     }
 
     &__p {
-        font-size: 14px;
+        @include fontSize(14px);
         color: $dark-gray;
-        margin-top: 10px;
-        margin-bottom: 10px;
+        @extend %default-margin-top, %default-margin-bottom;
     }
 
     &__comments {
@@ -195,10 +173,9 @@ $imgwidth: 45%;
 
     &__a {
         text-decoration: none;
-        font-size: 14px;
+        @include fontSize(14px);
         color: $dark-gray;
-        margin-top: 10px;
-        margin-bottom: 10px;
+        @extend %default-margin-top, %default-margin-bottom;
 
         &:hover {
             color: $purple;
@@ -220,7 +197,7 @@ $imgwidth: 45%;
             background-color: $yellow;
             text-align: center;
             padding: 10px 20px;
-            margin: 0;
+            @extend %no-margin-top, %no-margin-bottom;
             letter-spacing: 1.5px;
         }
 
@@ -250,7 +227,7 @@ $imgwidth: 45%;
         }
 
         &__post-title {
-            font-size: 14px;
+            @include fontSize(14px);
             color: $purple;
             @extend %no-decoration;
 
@@ -260,87 +237,8 @@ $imgwidth: 45%;
         }
 
         &__post-date {
-            font-size: 12px;
-            margin: 5px 0 0;
+            @include fontSize(12px);
+            @extend %half-margin-top;
         }
     } 
-}
-
-.about {
-    width: 80%;
-    margin: 0 auto;
-    font-family: Arial, Helvetica, sans-serif;
-
-    &__title {
-        background-color: $light-gray;
-        text-align: center;
-        padding: 20px;
-    }
-
-    .about__h1 {
-        font-size: 22px;
-        color: $dark-gray;
-        letter-spacing: 1px;
-        margin-top: 5px;
-        margin-bottom: 10px;
-        margin-left: 0;
-        margin-right: 0;
-    }
-
-    .breadcrumb {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-
-        &__link {
-            font-size: 12px;
-            text-decoration: none;
-            color: $dark-gray;
-            
-            &:hover {
-                text-decoration: underline;
-                color: $purple;
-            }
-        }
-
-        &__img {
-            width: 10px;
-            margin: 8px;
-        }
-    }
-
-    &__img {
-        width: 100%;
-        margin-bottom: 20px;
-    }
-
-    &__intro {
-        font-weight: 100;
-        color: $dark-gray;
-        width: 70%;
-        margin: 30px auto;
-        text-align: center;
-        font-size: 16px;
-    }
-
-    &__split {
-        display: flex;
-        justify-content: center;
-        flex-wrap: wrap;
-        align-items: center;
-    }
-
-    &__img-description {
-        width: $imgwidth;
-    }
-
-    &__txt {
-        width: calc(100% - #{$imgwidth});
-    }
-
-    &__p {
-        font-size: 14px;
-        padding: 10px 20px;
-        color: $dark-gray;
-    }
 }
