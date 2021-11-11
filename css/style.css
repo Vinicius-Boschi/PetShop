@@ -278,6 +278,7 @@
 }
 .collection__img {
   width: 100%;
+  padding: 6px;
 }
 .collection__about {
   display: flex;
@@ -302,6 +303,7 @@
 }
 .collection__title.half {
   font-size: 1.125rem;
+  padding: 5px;
 }
 @media (max-width: 767.98px) {
   .collection__title.half {
@@ -420,7 +422,7 @@
   margin-top: 10px;
 }
 
-.article__img, .contact {
+.contact {
   margin-top: 20px;
 }
 
