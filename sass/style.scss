@@ -191,6 +191,12 @@ $layout-margin-size: 10px;
         &__top {
             border-top: 1px solid $light-gray;
             padding: 15px 20px;
+            
+            @include for-phone-only {
+                width: 10rem;
+                text-align: center;
+                padding: 10px 10px;
+            }
         }
 
         &__title {
@@ -199,6 +205,10 @@ $layout-margin-size: 10px;
             padding: 10px 20px;
             @extend %no-margin-top, %no-margin-bottom;
             letter-spacing: 1.5px;
+
+            @include for-phone-only {
+                width: 6rem;
+            }
         }
 
         &__posts {
@@ -215,6 +225,8 @@ $layout-margin-size: 10px;
             &:not(:last-child) {
                 border-bottom: 1px dashed $light-gray;
             }
+
+
         }
 
         &__img {

@@ -571,11 +571,23 @@
   border-top: 1px solid #EAEAEB;
   padding: 15px 20px;
 }
+@media (max-width: 767.98px) {
+  .main .sidebar__top {
+    width: 10rem;
+    text-align: center;
+    padding: 10px 10px;
+  }
+}
 .main .sidebar__title {
   background-color: #FABE50;
   text-align: center;
   padding: 10px 20px;
   letter-spacing: 1.5px;
+}
+@media (max-width: 767.98px) {
+  .main .sidebar__title {
+    width: 6rem;
+  }
 }
 .main .sidebar__posts {
   margin: 0;
